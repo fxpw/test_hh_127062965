@@ -1,10 +1,76 @@
 
 services:
   kafka:
-    image: kafka:latest
-
+    image: apache/kafka:latest
+    container_name: kafka_127062965
+    restart: always
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/opt/kafka/config/server-jaas.conf"
+    volumes:
+      - ./config/server.properties:/opt/kafka/config/kraft/server.properties
+      - ./server-jaas.conf:/opt/kafka/config/server-jaas.conf
+      - kafka_data:/var/lib/kafka/data
+    entrypoint: >
+      bash -c "
+      if [ ! -f /var/lib/kafka/data/meta.properties ]; then
+        echo '⚙️  Formatting KRaft storage...';
+        CLUSTER_ID=$$(/opt/kafka/bin/kafka-storage.sh random-uuid);
+        /opt/kafka/bin/kafka-storage.sh format --ignore-formatted --cluster-id $$CLUSTER_ID --config /opt/kafka/config/kraft/server.properties;
+      fi;
+      echo '🚀 Starting Kafka...';
+      exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties
+      "
     networks:
       - test_hh_net_127062965
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  kafka-init:
+    image: apache/kafka:latest
+    container_name: kafka_init_127062965
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: >
+      bash -c "
+      echo '⏳ Waiting for Kafka...'; sleep 15;
+      echo '🚀 Creating topics...';
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic booking.created   --partitions 3 --replication-factor 1;
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic booking.checked   --partitions 3 --replication-factor 1;
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic booking.confirmed --partitions 3 --replication-factor 1;
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic booking.rejected  --partitions 3 --replication-factor 1;
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic booking.canceled  --partitions 3 --replication-factor 1;
+      echo '✅ Topics created successfully.';
+      "
+    networks:
+      - test_hh_net_127062965
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka_ui_127062965
+    restart: always
+    ports:
+      - "8085:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9093
+      - KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL=SASL_PLAINTEXT
+      - KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM=PLAIN
+      - KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG=org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="${KAFKA_PASSWORD:-supersecret}";
+    depends_on:
+      - kafka
+    networks:
+      - test_hh_net_127062965
+
+volumes:
+  kafka_data:
 
 networks:
   test_hh_net_127062965:

@@ -1,8 +1,8 @@
 
 services:
 
-  test_hh_127062965_api:
-    container_name: test_hh_127062965_api
+  test_hh_127062965_booking:
+    container_name: test_hh_127062965_booking
     restart: always
     build:
       context: ./docker

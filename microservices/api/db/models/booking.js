@@ -19,9 +19,9 @@ const props = {
 		primaryKey: true,
 	},
 	stage: {
-		type:DataTypes.ENUM([
+		type:DataTypes.ENUM(
 			"CREATED","CHECKING_AVAILABILITY","CONFIRMED","REJECTED"
-		]),
+		),
 		allowNull:false,
 	},
 	restaurant:{

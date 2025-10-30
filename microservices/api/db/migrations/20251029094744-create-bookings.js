@@ -9,9 +9,9 @@ module.exports = {
 				primaryKey: true,
 			},
 			stage: {
-				type: Sequelize.ENUM([
+				type: Sequelize.ENUM(
 					"CREATED", "CHECKING_AVAILABILITY", "CONFIRMED", "REJECTED"
-				]),
+				),
 				allowNull: false,
 			},
 			restaurant: {
