@@ -19,9 +19,9 @@ start:create_network start_all
 
 stop_all:
 	@echo "Остановка всех микросервисов..."
-	@docker compose -f microservices/db/docker-compose.yml up -d
-	@docker compose -f microservices/api/docker-compose.yml up -d
-	@docker compose -f microservices/booking/docker-compose.yml up -d
-	@docker compose -f microservices/kafka/docker-compose.yml up -d
+	@docker compose -f microservices/db/docker-compose.yml down
+	@docker compose -f microservices/api/docker-compose.yml down
+	@docker compose -f microservices/booking/docker-compose.yml down
+	@docker compose -f microservices/kafka/docker-compose.yml down
 down:stop_all
 stop:stop_all
