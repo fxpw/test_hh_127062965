@@ -1,5 +1,5 @@
 'use strict';
-const bookingService = require('modules/bookings//services/BookingService');
+const bookingService = require('modules/bookings/services/BookingService');
 
 class BookingController {
 	async create(req, res) {

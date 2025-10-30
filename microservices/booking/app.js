@@ -6,6 +6,7 @@ const path = require('path');
 const sequelize = require('db/connect');
 const app = express();
 const BACKEND_PORT = process.env.BACKEND_PORT || 5000;
+const bookingService = require('./modules/bookings/services/BookingService');
 
 app.use(cors({ origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'] }));
 app.use(express.json());
@@ -66,7 +67,7 @@ const initApp = async () => {
 		console.error('Unable to connect to the database:', error);
 	}
 	await loadRoutesFromModules();
-
+	await bookingService.startConsumer();
 	if (process.env.NODE_ENV === 'production') {
 		app.listen(BACKEND_PORT, () => console.log('Server running in production mode.'));
 	} else {

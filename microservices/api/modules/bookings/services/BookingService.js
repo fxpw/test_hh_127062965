@@ -1,18 +1,15 @@
 'use strict';
 const bookingRepository = require('modules/bookings/repositories/BookingRepository');
 const { Kafka } = require('kafkajs');
+const config = require('config/config');
 
 const kafka = new Kafka({
-	clientId: 'api-service',
-	brokers: [process.env.KAFKA_BROKER],
-	sasl: {
-		mechanism: process.env.KAFKA_MECHANISM,
-		username: process.env.KAFKA_USERNAME,
-		password: process.env.KAFKA_PASSWORD,
-	},
-	ssl: false,
+	clientId: config.kafka.clientId,
+	brokers: [config.kafka.broker],
+	ssl: config.kafka.ssl,
 });
 const producer = kafka.producer();
+
 
 class BookingService {
 	async createBooking(data) {

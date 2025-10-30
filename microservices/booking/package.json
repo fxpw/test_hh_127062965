@@ -1,5 +1,5 @@
 {
-	"name": "test_hh_127062965_b",
+	"name": "test_hh_127062965_booking",
 	"version": "1.0.0",
 	"main": "app.js",
 	"scripts": {
@@ -16,6 +16,8 @@
 		"cors": "^2.8.5",
 		"dotenv": "^16.5.0",
 		"express": "^5.1.0",
+		"kafkajs": "^2.2.4",
+		"mysql2": "^3.15.3",
 		"sequelize": "^6.37.7"
 	},
 	"devDependencies": {

@@ -10,6 +10,12 @@ let config = {
 	dialectOptions: {
 		bigNumberStrings: true,
 	},
+	kafka: {
+		clientId: process.env.KAFKA_CLIENT_ID || 'booking-service',
+		broker: process.env.KAFKA_BROKER || 'kafka:9092',
+		ssl: process.env.KAFKA_SSL === 'true',
+		sasl: null,
+	},
 }
 // console.log(config);
 module.exports = config;
