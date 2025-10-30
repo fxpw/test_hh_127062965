@@ -5,13 +5,13 @@ const fs = require('fs');
 const path = require('path');
 const sequelize = require('db/connect');
 const app = express();
-const BACKEND_PORT = process.env.BACKEND_PORT || 5000;
+const BACKEND_PORT = 5000;
 
 app.use(cors({ origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'] }));
 app.use(express.json());
 if (process.env.NODE_ENV !== 'production') {
 	const logger = (req, res, next) => {
-		// console.log(`${req.method} ${req.url}`);
+		console.log(`${req.method} ${req.url}`);
 		next();
 	};
 	app.use(logger);

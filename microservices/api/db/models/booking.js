@@ -41,6 +41,7 @@ const props = {
 Bookings.init(props, {
 	sequelize,
 	tableName: 'bookings',
+	timestamps: false,
 });
 
 /**

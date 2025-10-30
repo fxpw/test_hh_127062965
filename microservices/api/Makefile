@@ -1,4 +1,4 @@
-exec_in_container=docker compose exec test_hh_127062965_back
+exec_in_container=docker compose exec test_hh_127062965_api
 
 .PHONY: build start
 all: build start

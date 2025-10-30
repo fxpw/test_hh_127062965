@@ -1,4 +1,4 @@
-// microservices/api/db/models/booking.js
+// microservices/booking/db/models/booking.js
 'use strict';
 const {
 	Model,
@@ -41,6 +41,7 @@ const props = {
 Bookings.init(props, {
 	sequelize,
 	tableName: 'bookings',
+	timestamps: false,
 });
 
 /**
