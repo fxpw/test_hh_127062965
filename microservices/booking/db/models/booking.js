@@ -17,6 +17,7 @@ const props = {
 	id: {
 		type: DataTypes.INTEGER.UNSIGNED,
 		primaryKey: true,
+		autoIncrement: true
 	},
 	stage: {
 		type:DataTypes.ENUM(

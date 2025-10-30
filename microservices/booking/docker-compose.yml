@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/usr/src/app
     ports:
-      - '${BACKEND_PORT:-5003}:5000'
+      - '${BACKEND_PORT:-5004}:5000'
       - '${DEBUG_BACKEND_PORT:-9229}:9229'
     environment:
       - NODE_ENV=${APP_ENV}
