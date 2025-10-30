@@ -1,0 +1,11 @@
+
+services:
+  kafka:
+    image: kafka:latest
+
+    networks:
+      - test_hh_net_127062965
+
+networks:
+  test_hh_net_127062965:
+    external: true

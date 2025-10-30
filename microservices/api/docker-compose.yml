@@ -1,0 +1,22 @@
+
+services:
+
+  test_hh_127062965_api:
+    container_name: test_hh_127062965_api
+    restart: always
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - '${BACKEND_PORT:-5003}:5000'
+      - '${DEBUG_BACKEND_PORT:-9229}:9229'
+    environment:
+      - NODE_ENV=${APP_ENV}
+    networks:
+      - test_hh_net_127062965
+
+networks:
+  test_hh_net_127062965:
+    external: true
